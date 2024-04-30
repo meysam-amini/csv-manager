@@ -90,13 +90,9 @@ public non-sealed class CsvFIleServiceImpl implements CsvFileService {
                 throw new BusinessException("YOUR_FILE_MAY_HAVE_AN_ALREADY_PERSISTED_CSV");
             }
         }
-        catch (DbException e){
+        catch (DbException | BusinessException e){
             throw e;
-        }
-        catch (BusinessException e){
-            throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Exception on upload process at time:{}, exception is:{}", System.currentTimeMillis(), e);
             throw new BusinessException("SERVER_ERROR_ON_UPLOADING_FILE");
         }
