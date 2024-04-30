@@ -8,10 +8,10 @@ spring:
   application:
     name: add-log
 
-    servlet:
-      multipart:
-        max-file-size: 5MB
-        max-request-size: 5MB
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
   messages:
     #i18n

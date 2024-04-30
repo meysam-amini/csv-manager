@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,18 +49,18 @@ class CsvFIleServiceImplTest {
         assertThrows(BusinessException.class, () -> csvFIleService.upload(invalidFile));
     }
 
-//    @Test
-//    public void testUpload_success() throws Exception {
-//        MultipartFile validFile = mock(MultipartFile.class);
-//        when(validFile.getOriginalFilename()).thenReturn("test.csv");
-//        when(validFile.getBytes()).thenReturn("valid,csv,data".getBytes());
-//        when(messageSourceService.getMessage(anyString())).thenReturn("Success message");
-//
-//        csvFIleService.upload(validFile);
-//
-//        // Verify interactions with mocks (e.g., csvRecordRepository.saveAll)
-//        verify(csvRecordRepository).saveAll(anyList());
-//    }
+    @Test
+    public void testUpload_success() throws Exception {
+        MultipartFile validFile = mock(MultipartFile.class);
+        when(validFile.getOriginalFilename()).thenReturn("test.csv");
+        when(validFile.getBytes()).thenReturn("valid,csv,data".getBytes());
+        when(messageSourceService.getMessage(anyString())).thenReturn("Success message");
+        ReflectionTestUtils.setField(csvFIleService, "UPLOADED_FOLDER", "something");
+        csvFIleService.upload(validFile);
+
+        // Verify interactions with mocks (e.g., csvRecordRepository.saveAll)
+        verify(csvRecordRepository).saveAll(anyList());
+    }
 
 }
 
