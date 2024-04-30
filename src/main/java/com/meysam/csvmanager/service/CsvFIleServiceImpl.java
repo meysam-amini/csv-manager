@@ -13,6 +13,7 @@ import com.meysam.csvmanager.repository.CsvRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,7 +83,15 @@ public non-sealed class CsvFIleServiceImpl implements CsvFileService {
             while ((readAll).hasNext()) {
                 csvRecords.add((CsvRecord) readAll.next());
             }
-            csvRecordRepository.saveAll(csvRecords);
+            try {
+                csvRecordRepository.saveAll(csvRecords);
+            }catch (DataIntegrityViolationException e){
+                log.error("DataIntegrityViolationException on saving new csv records at time:{}, exception is :{}",System.currentTimeMillis(),e);
+                throw new DbException("YOUR_FILE_MAY_HAVE_AN_ALREADY_PERSISTED_CSV");
+            }
+        }
+        catch (DbException e){
+            throw e;
         }
         catch (BusinessException e){
             throw e;
