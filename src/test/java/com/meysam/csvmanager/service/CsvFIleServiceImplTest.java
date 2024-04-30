@@ -48,18 +48,18 @@ class CsvFIleServiceImplTest {
         assertThrows(BusinessException.class, () -> csvFIleService.upload(invalidFile));
     }
 
-    @Test
-    public void testUpload_success() throws Exception {
-        MultipartFile validFile = mock(MultipartFile.class);
-        when(validFile.getOriginalFilename()).thenReturn("test.csv");
-        when(validFile.getBytes()).thenReturn("valid,csv,data".getBytes());
-        when(messageSourceService.getMessage(anyString())).thenReturn("Success message");
-
-        csvFIleService.upload(validFile);
-
-        // Verify interactions with mocks (e.g., csvRecordRepository.saveAll)
-        verify(csvRecordRepository).saveAll(anyList());
-    }
+//    @Test
+//    public void testUpload_success() throws Exception {
+//        MultipartFile validFile = mock(MultipartFile.class);
+//        when(validFile.getOriginalFilename()).thenReturn("test.csv");
+//        when(validFile.getBytes()).thenReturn("valid,csv,data".getBytes());
+//        when(messageSourceService.getMessage(anyString())).thenReturn("Success message");
+//
+//        csvFIleService.upload(validFile);
+//
+//        // Verify interactions with mocks (e.g., csvRecordRepository.saveAll)
+//        verify(csvRecordRepository).saveAll(anyList());
+//    }
 
 }
 

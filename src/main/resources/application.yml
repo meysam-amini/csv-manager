@@ -1,5 +1,9 @@
 server:
   port: 8090
+  file:
+    upload:
+      path: \csvManager\files
+
 spring:
   application:
     name: add-log
@@ -14,23 +18,31 @@ spring:
     basename: messages/messages
 
 ############# DATA SOURCE ####################
+  h2:
+    console:
+      enabled: true
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:demo;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:testdb
     username: sa
-    password:
+    password: sa
+    driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
+      ddl-auto: update
+    generate-ddl: true
     show-sql: true
     properties:
       hibernate:
-        dialect: H2Dialect
-        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
 
 logging:
   level:
     org:
       hibernate:
         sql: info
+
+files:
+  max-file-bytes: 3000000
