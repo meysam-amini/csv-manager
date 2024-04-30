@@ -87,7 +87,7 @@ public non-sealed class CsvFIleServiceImpl implements CsvFileService {
                 csvRecordRepository.saveAll(csvRecords);
             }catch (DataIntegrityViolationException e){
                 log.error("DataIntegrityViolationException on saving new csv records at time:{}, exception is :{}",System.currentTimeMillis(),e);
-                throw new DbException("YOUR_FILE_MAY_HAVE_AN_ALREADY_PERSISTED_CSV");
+                throw new BusinessException("YOUR_FILE_MAY_HAVE_AN_ALREADY_PERSISTED_CSV");
             }
         }
         catch (DbException e){
