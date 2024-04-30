@@ -7,8 +7,10 @@ import com.meysam.csvmanager.service.CsvFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,13 +20,13 @@ public class CsvFileController {
     private final CsvFileService csvFileService;
     private final LocaleMessageSourceService messageSourceService;
 
-    @GetMapping("upload")
-    public ResponseEntity<RestResponse<String>> upload(){
+    @PostMapping(value = "upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RestResponse<String>> upload(@RequestParam("file") MultipartFile file){
 
-        csvFileService.upload();
+        String result = csvFileService.upload(file);
 
         return ResponseEntity.ok(
-                new RestResponse<>("",messageSourceService.getMessage("SUCCESS"),HttpStatus.OK));
+                new RestResponse<>(result,messageSourceService.getMessage("SUCCESS"),HttpStatus.OK));
 
     }
 
