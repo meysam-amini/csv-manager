@@ -8,7 +8,7 @@ public sealed interface CsvFileService permits CsvFIleServiceImpl {
 
     String upload();
 
-    Page<CsvRecordResponseDto> getAllRecords(int pageNumber, int pageSize);
+    Page<CsvRecordResponseDto> getAllRecords(Integer pageNumber, Integer pageSize);
 
     CsvRecordResponseDto getRecordByCode(String code);
 

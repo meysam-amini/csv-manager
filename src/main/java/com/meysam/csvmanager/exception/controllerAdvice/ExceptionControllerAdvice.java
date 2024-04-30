@@ -2,6 +2,7 @@ package com.meysam.csvmanager.exception.controllerAdvice;
 
 import com.meysam.csvmanager.config.messages.LocaleMessageSourceService;
 import com.meysam.csvmanager.exception.exceptions.BusinessException;
+import com.meysam.csvmanager.exception.exceptions.DbException;
 import com.meysam.csvmanager.model.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,14 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<RestResponse<?>>  businessException(BusinessException ex) {
         log.error("handling BusinessException at time :{}, exception is : {}",System.currentTimeMillis(),ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestResponse<>(null,messageSourceService.getMessage(ex.getMessage()),HttpStatus.BAD_REQUEST));
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(value = DbException.class)
+    public ResponseEntity<RestResponse<?>>  businessException(DbException ex) {
+        log.error("handling DbException at time :{}, exception is : {}",System.currentTimeMillis(),ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RestResponse<>(null,messageSourceService.getMessage(ex.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 
