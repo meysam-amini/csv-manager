@@ -6,12 +6,12 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.meysam.csvmanager.config.messages.LocaleMessageSourceService;
 import com.meysam.csvmanager.exception.exceptions.BusinessException;
 import com.meysam.csvmanager.exception.exceptions.DbException;
+import com.meysam.csvmanager.exception.exceptions.FileFormatException;
 import com.meysam.csvmanager.model.dto.CsvRecordResponseDto;
 import com.meysam.csvmanager.model.entity.CsvRecord;
 import com.meysam.csvmanager.repository.CsvRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.FileInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -97,7 +96,7 @@ public non-sealed class CsvFIleServiceImpl implements CsvFileService {
 
     @Override
     public Page<CsvRecordResponseDto> getAllRecords(Integer pageNumber, Integer pageSize) {
-        return csvRecordRepository.findAll(getPageapble(pageNumber,pageSize))
+        return csvRecordRepository.findAll(getPageable(pageNumber,pageSize))
                 .map(CsvRecordResponseDto::mapFromCsvRecord);
     }
 
@@ -144,13 +143,13 @@ public non-sealed class CsvFIleServiceImpl implements CsvFileService {
     private void validateFileFormat(String fileFormat){
         String[] validFormats = {"csv"};
         if(!Arrays.asList(validFormats).contains(fileFormat)){
-            throw new BusinessException(messageSourceService.getMessage("FILE_FORMAT_NOT_SUPPORTED")+" "+ Arrays.stream(validFormats).toList());
+            throw new FileFormatException(messageSourceService.getMessage("FILE_FORMAT_NOT_SUPPORTED")+". Valid formats: "+ Arrays.stream(validFormats).toList());
         }
     }
 
 
 
-    private Pageable getPageapble(Integer pageNumber, Integer pageSize){
+    private Pageable getPageable(Integer pageNumber, Integer pageSize){
 
         if(Objects.isNull(pageNumber))
             pageNumber = 0;

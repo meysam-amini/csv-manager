@@ -3,6 +3,7 @@ package com.meysam.csvmanager.exception.controllerAdvice;
 import com.meysam.csvmanager.config.messages.LocaleMessageSourceService;
 import com.meysam.csvmanager.exception.exceptions.BusinessException;
 import com.meysam.csvmanager.exception.exceptions.DbException;
+import com.meysam.csvmanager.exception.exceptions.FileFormatException;
 import com.meysam.csvmanager.model.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,14 @@ public class ExceptionControllerAdvice {
 
     }
 
+    @ExceptionHandler(FileFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody
+    ResponseEntity<?> fileException(FileFormatException ex) {
+        log.error("handling FileFormatException at time :{}, exception is : {}",System.currentTimeMillis(),ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestResponse<>(null,ex.getMessage(),HttpStatus.BAD_REQUEST));
+
+    }
 
 
     @ResponseBody

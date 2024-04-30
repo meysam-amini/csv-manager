@@ -2,6 +2,7 @@ package com.meysam.csvmanager.service;
 
 import com.meysam.csvmanager.config.messages.LocaleMessageSourceService;
 import com.meysam.csvmanager.exception.exceptions.BusinessException;
+import com.meysam.csvmanager.exception.exceptions.FileFormatException;
 import com.meysam.csvmanager.repository.CsvRecordRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -46,7 +47,7 @@ class CsvFIleServiceImplTest {
     public void testUpload_invalidFileFormat() throws Exception {
         MultipartFile invalidFile = mock(MultipartFile.class);
         when(invalidFile.getOriginalFilename()).thenReturn("test.txt");
-        assertThrows(BusinessException.class, () -> csvFIleService.upload(invalidFile));
+        assertThrows(FileFormatException.class, () -> csvFIleService.upload(invalidFile));
     }
 
     @Test
